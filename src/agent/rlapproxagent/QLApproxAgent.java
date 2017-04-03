@@ -51,7 +51,7 @@ public class QLApproxAgent extends QLearningAgent{
 	@Override
 	public void reset() {
 		super.reset();
-		this.qvaleurs.clear();
+		this.qvalues.clear();
 	
 		//*** VOTRE CODE
 		

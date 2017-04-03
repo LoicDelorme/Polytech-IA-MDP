@@ -6,51 +6,47 @@ import java.util.Random;
 import agent.rlagent.RLAgent;
 import environnement.Action;
 import environnement.Etat;
+
 /**
  * Strategie qui renvoit un choix aleatoire avec proba epsilon, un choix glouton (suit la politique de l'agent) sinon
+ * 
  * @author lmatignon
- *
  */
-public class StrategyGreedy extends StrategyExploration{
+public class StrategyGreedy extends StrategyExploration {
+
 	/**
 	 * parametre pour probabilite d'exploration
 	 */
 	protected double epsilon;
-	private Random rand=new Random();
-	
-	
-	
-	public StrategyGreedy(RLAgent agent,double epsilon) {
+
+	private Random rand = new Random();
+
+	public StrategyGreedy(RLAgent agent, double epsilon) {
 		super(agent);
 		this.epsilon = epsilon;
 	}
 
 	@Override
-	public Action getAction(Etat _e) {//renvoi null si _e absorbant
-		double d =rand.nextDouble();
-		List<Action> actions;
-		if (this.agent.getActionsLegales(_e).isEmpty()){
+	public Action getAction(Etat state) {
+		final List<Action> legalActions = this.agent.getActionsLegales(state);
+		if (legalActions.isEmpty()) {
 			return null;
 		}
-	
-		//VOTRE CODE ICI
-		
-		return null;
+
+		if (this.epsilon > this.rand.nextDouble()) {
+			return legalActions.get(this.rand.nextInt(legalActions.size()));
+		}
+
+		final List<Action> politicActions = this.agent.getPolitique(state);
+		return politicActions.get(this.rand.nextInt(politicActions.size()));
 	}
 
 	public double getEpsilon() {
-		return epsilon;
+		return this.epsilon;
 	}
 
 	public void setEpsilon(double epsilon) {
 		this.epsilon = epsilon;
-		System.out.println("epsilon:"+epsilon);
+		System.out.println("epsilon:" + epsilon);
 	}
-
-/*	@Override
-	public void setAction(Action _a) {
-		// TODO Auto-generated method stub
-		
-	}*/
-
 }
